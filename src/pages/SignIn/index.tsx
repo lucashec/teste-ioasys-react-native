@@ -16,11 +16,13 @@ import {
 } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
+import { useAppContext } from '../../contexts/context';
 
 const SignIn: React.FC = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {setAppContext} = useAppContext();
     
   function handleSignIn(){
       api.post('auth/sign-in', {
@@ -30,10 +32,17 @@ const SignIn: React.FC = () => {
         await AsyncStorage
         .setItem('token', 
         response.headers.authorization);
-        navigation.navigate('Home');
+        
+        setAppContext({auth: true});
+        
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'Home' as never}]
+        })
       }).catch((error) => {
         console.log(error)
       })
+ 
   }
   return (
       <>
@@ -42,7 +51,7 @@ const SignIn: React.FC = () => {
         <Image source={Logo} 
         style={{
             width: 130,
-            height: 44
+            height: 44,
         }}
         />
         <Text style={Labels.title}>

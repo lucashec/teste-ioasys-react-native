@@ -2,20 +2,20 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
 import {} from 'react-native/Libraries/NewAppScreen';
-import {AuthProvider} from './src/contexts/auth';
+import ContextProvider from './src/contexts/context';
 import Routes from './src/routes';
 const App = () => {
 
   return (
     <>
-    <AuthProvider>
+      <ContextProvider>
       <StatusBar
         barStyle="light-content"
         backgroundColor="transparent"
         translucent
       />
       <Routes/>
-    </AuthProvider>
+      </ContextProvider>
     </>
   );
 };

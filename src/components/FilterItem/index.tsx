@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useAppContext } from '../../contexts/context';
 import {Styles} from './styles';
 
 interface FilterItemProps{
     label: string;
+    categoryName?: string;
+    publishingYear?: number;
+    setCategory?: React.SetStateAction<string>;
 }
 const FilterItem: React.FC<FilterItemProps> = (props) => {
   const [selected, setSelected] = useState(false);
+  const {appContext, setAppContext} = useAppContext();  
 
   const selectedBackground = '#333333';
   let currentColor = '';
@@ -31,7 +36,13 @@ const FilterItem: React.FC<FilterItemProps> = (props) => {
     })
   return (
       <TouchableOpacity
-        onPress={() => setSelected(!selected)}
+        onPress={() => {
+          setSelected(!selected)
+          const temp = appContext;
+          temp.category = props.categoryName;
+          temp.year = props.publishingYear;
+          setAppContext(temp);
+        }}
         style={[Styles.container, addBackground.color]}
       >
           <Text
